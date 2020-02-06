@@ -1,21 +1,39 @@
 const users = [
     {
         id: 1,
-        firstname: "Lebron",
+        firstname: "LeBron",
         lastname: "James",
-        address: "jakarta",
-        email: "lebron@james.com",
+        address: "Ohio",
+        email: "lebron@dev.com",
         password: "1234",
-        age: "17"
+        age: "35"
     },
     {
         id: 2,
         firstname: "Carmelo",
         lastname: "Anthony",
-        address: "US",
+        address: "New York",
         email: "melo@dev.com",
         password: "1234",
-        age: "18"
+        age: "35"
+    },
+    {
+        id: 3,
+        firstname: "Chris",
+        lastname: "Bosh",
+        address: "Texas",
+        email: "chrisbosh@dev.com",
+        password: "1234",
+        age: "35"
+    },
+    {
+        id: 4,
+        firstname: "Dwyane",
+        lastname: "Wade",
+        address: "Illinois",
+        email: "dwade@dev.com",
+        password: "1234",
+        age: "38"
     }
 ]
 
