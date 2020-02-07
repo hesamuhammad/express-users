@@ -67,7 +67,8 @@ module.exports = {
             const data = req.body
             const file = req.file;
             
-            users.push({...data, avatar: file.path})
+            console.log(data)
+            users.push({...data, avatar: file.path === undefined && null})
 
             res.status(200).send({ 
                 message: "Your image successfully added to our database", 
