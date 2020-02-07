@@ -59,5 +59,22 @@ module.exports = {
 
         // Return the same course
         res.send(users)
+    },
+
+    postData: (req, res) => {
+        res.status(200).send({ message: "Your image successfully added to our database"})
+        try {
+            const data = req.body
+            const file = req.file;
+            
+            users.push({...data, avatar: file.path})
+
+            res.status(200).send({ 
+                message: "Your image successfully added to our database", 
+                data: users
+            })
+        } catch(error) {
+            console.log(error)
+        }
     }
 }
