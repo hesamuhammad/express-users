@@ -1,80 +1,87 @@
-const users = require("../../models/users")
+const users = require("../../models/users");
 
 module.exports = {
-    getAll: (req, res) => {
-        res.status(200).send({message: "Welcome to our users database", data: users})
-    },
+  getAll: (req, res) => {
+    res
+      .status(200)
+      .send({ message: "Welcome to our users database", data: users });
+  },
 
-    getById: (req, res) => {
-        //mas miftah logic
-        const { id } = req.params;
-        
-        const filterByid = users.filter(item => {
-            if (item.id === parseInt(id)) {
-                return item;
-            }
-        });
+  getById: (req, res) => {
+    //mas miftah logic
+    const { id } = req.params;
 
-        res.status(200).send({
-            message: `This is data user with id ${id}`,
-            data: filterByid[0]
-        })
-    },
+    const filterByid = users.filter(item => {
+      if (item.id === parseInt(id)) {
+        return item;
+      }
+    });
 
-    getByEmail: (req, res) => {
-        // hesa logic
-        const userGet = users.find(item => item.email === req.params.email);
-    
-        if (!userGet) res.status(404).send('The user with the given Email wasnt found');
-        res.send(userGet)
-    },
-    
-    updateByEmail: (req, res) => {
-        // Look up the users
-        const userPut = users.find(item => item.email === req.params.email);
-        // If not existing, return 404
-        if (!userPut) res.status(404).send('The user with the given Email wasnt found');
+    res.status(200).send({
+      message: `This is data user with id ${id}`,
+      data: filterByid[0]
+    });
+  },
 
-        // If invalid, return 400 -- Bad request
-        // if(error) {
-        //     res.status(400).send(error.details[0].message)
-        //     return;
-        // }
+  getByEmail: (req, res) => {
+    // hesa logic
+    const userGet = users.find(item => item.email === req.params.email);
 
-        // Update users
-        userPut.email = req.body.email;
-        // Return to updated users
-        res.send(userPut);
-    },
+    if (!userGet)
+      res.status(404).send("The user with the given Email wasnt found");
+    res.send(userGet);
+  },
 
-    deleteByEmail: (req, res) => {
-        // Look up the todo
-        const userGet = users.find(item => item.email === req.params.email);
-        // Not existing, return 404
-        if (!userGet) res.status(404).send('The user with the given Email wasnt found');
+  updateByEmail: (req, res) => {
+    // Look up the users
+    const userPut = users.find(item => item.email === req.params.email);
+    // If not existing, return 404
+    if (!userPut)
+      res.status(404).send("The user with the given Email wasnt found");
 
-        // Delete
-        const index = users.indexOf(userGet);
-        users.splice(index, 1);
+    // If invalid, return 400 -- Bad request
+    // if(error) {
+    //     res.status(400).send(error.details[0].message)
+    //     return;
+    // }
 
-        // Return the same course
-        res.send(users)
-    },
+    // Update users
+    userPut.email = req.body.email;
+    // Return to updated users
+    res.send(userPut);
+  },
 
-    postData: (req, res) => {
-        try {
-            const data = req.body
-            const file = req.file;
-            
-            console.log(data)
-            users.push({...data, avatar: file.path === undefined && null})
+  deleteByEmail: (req, res) => {
+    // Look up the todo
+    const userGet = users.find(item => item.email === req.params.email);
+    // Not existing, return 404
+    if (!userGet)
+      res.status(404).send("The user with the given Email wasnt found");
 
-            res.status(200).send({ 
-                message: "Your image successfully added to our database", 
-                data: users
-            })
-        } catch(error) {
-            console.log(error)
-        }
+    // Delete
+    const index = users.indexOf(userGet);
+    users.splice(index, 1);
+
+    // Return the same course
+    res.send(users);
+  },
+
+  postData: (req, res) => {
+    try {
+      const data = req.body;
+      const file = req.file;
+
+      console.log(data);
+      console.log(file);
+      
+      users.push({ ...data, avatar: file === undefined ? null : file.type });
+
+      res.status(200).send({
+        message: "Your image successfully added to our database",
+        data: users
+      });
+    } catch (error) {
+      console.log(error);
     }
-}
+  }
+};
