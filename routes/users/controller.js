@@ -62,7 +62,6 @@ module.exports = {
     },
 
     postData: (req, res) => {
-        res.status(200).send({ message: "Your image successfully added to our database"})
         try {
             const data = req.body
             const file = req.file;
