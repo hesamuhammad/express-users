@@ -1,87 +1,128 @@
-const users = require("../../models/users");
+const { Users } = require("../../models");
+const { hashPassword } = require("../../helpers");
+const { comparedPassword } = require("../../helpers");
 
 module.exports = {
-  getAll: (req, res) => {
-    res
-      .status(200)
-      .send({ message: "Welcome to our users database", data: users });
-  },
+    getAll: async (req, res) => {
+        try {
+            const result = await Users.find({});
 
-  getById: (req, res) => {
-    //mas miftah logic
-    const { id } = req.params;
+            res.status(200).send({ message: "Show datas users", data: result });
+        } catch (error) {
+            console.log(error);
+        }
+    },
 
-    const filterByid = users.filter(item => {
-      if (item.id === parseInt(id)) {
-        return item;
-      }
-    });
+    getById: async (req, res) => {
+        const getById = req.params.id;
+        await Users.findById(getById, (err, data) => {
+            res.status(200).send({
+                message: "Get by id:",
+                data: data
+            });
+        });
+    },
 
-    res.status(200).send({
-      message: `This is data user with id ${id}`,
-      data: filterByid[0]
-    });
-  },
+    getByEmail: async (req, res) => {
+        try {
+            const getByEmail = req.params.email;
+            await Users.findById(getByEmail, (err, data) => {
+                res.status(200).send({
+                    message: "Get by Email:",
+                    data: data
+                });
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    },
 
-  getByEmail: (req, res) => {
-    // hesa logic
-    const userGet = users.find(item => item.email === req.params.email);
+    updateByEmail: async (req, res) => {
+        try {
+            const data = req.body;
+            const email = req.params.email;
+            await Users.findOneAndUpdate(
+                { email: email }, // conditions
+                data, // update
+                { new: true }, // options
+                (err, dataUser) => {
+                    // callback
+                    res.status(200).send({
+                        message: "Data has been updated",
+                        data: dataUser
+                    });
+                }
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    },
 
-    if (!userGet)
-      res.status(404).send("The user with the given Email wasnt found");
-    res.send(userGet);
-  },
+    deleteByEmail: async (req, res) => {
+        try {
+            await Users.deleteOne(
+                { email: req.params.email },
+                (err, result) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    res.status(200).send({
+                        message: `Your data from email: ${req.params.email} has been deleted`,
+                        data: result
+                    });
+                }
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    },
 
-  updateByEmail: (req, res) => {
-    // Look up the users
-    const userPut = users.find(item => item.email === req.params.email);
-    // If not existing, return 404
-    if (!userPut)
-      res.status(404).send("The user with the given Email wasnt found");
+    postData: async (req, res) => {
+        try {
+            const data = req.body;
+            const file = req.file;
+            const hash = await hashPassword(req.body.password);
 
-    // If invalid, return 400 -- Bad request
-    // if(error) {
-    //     res.status(400).send(error.details[0].message)
-    //     return;
-    // }
+            // console.log(data, "ini data");
+            // console.log(hash, "ini hash");
 
-    // Update users
-    userPut.email = req.body.email;
-    // Return to updated users
-    res.send(userPut);
-  },
+            const result = await Users.create({
+                ...data,
+                avatar: file === undefined ? null : file.path,
+                password: hash
+            });
+            // console.log(data);
+            // console.log(file);
 
-  deleteByEmail: (req, res) => {
-    // Look up the todo
-    const userGet = users.find(item => item.email === req.params.email);
-    // Not existing, return 404
-    if (!userGet)
-      res.status(404).send("The user with the given Email wasnt found");
+            res.status(200).send({
+                message: "Your image successfully added to our database",
+                data: result
+                // password: hash
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    },
 
-    // Delete
-    const index = users.indexOf(userGet);
-    users.splice(index, 1);
-
-    // Return the same course
-    res.send(users);
-  },
-
-  postData: (req, res) => {
-    try {
-      const data = req.body;
-      const file = req.file;
-
-      console.log(data);
-      console.log(file);
-      
-      users.push({ ...data, avatar: file === undefined ? null : file.type });
-
-      res.status(200).send({
-        message: "Your image successfully added to our database",
-        data: users
-      });
-    } catch (error) {
-      console.log(error);
+    login: async (req, res) => {
+        try {
+            const result = await Users.findOne({ email: req.body.email });
+            const compared = await comparedPassword(
+                req.body.password,
+                result.password
+            );
+            if (compared === true) {
+                res.status(200).send({
+                    message: "You are successfully logged in",
+                    data: result
+                });
+            } else {
+                res.status(400).send({
+                    message: "Are you really our user ?"
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }
-  }
 };

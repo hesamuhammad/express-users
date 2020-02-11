@@ -1,17 +1,23 @@
-const express = require('express')
+const express = require("express");
 const router = express.Router();
-const { upload } = require("../../config")
+const { upload } = require("../../config");
 
-const { getAll, getById, getByEmail, updateByEmail, deleteByEmail } = require("./controller")
+const {
+    getAll,
+    getById,
+    getByEmail,
+    updateByEmail,
+    deleteByEmail
+} = require("./controller");
 
 router.get("/", getAll);
-router.get("/id/:id", getById)
-router.get("/email/:email", getByEmail)
-router.put("/email/:email", updateByEmail)
-router.delete("/email/:email", deleteByEmail)
+router.get("/id/:id", getById);
+router.get("/email/:email", getByEmail);
+router.put("/email/:email", updateByEmail);
+router.delete("/email/:email", deleteByEmail);
 // router.get("/email/:email", require("./controller").getByEmail)
 
-router.post("/", upload.single("avatar"), require("./controller").postData)
-
+router.post("/", upload.single("avatar"), require("./controller").postData);
+router.post("/login", require("./controller").login);
 
 module.exports = router;

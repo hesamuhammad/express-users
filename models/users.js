@@ -1,40 +1,40 @@
-const users = [
-    {
-        id: 1,
-        firstname: "LeBron",
-        lastname: "James",
-        address: "Ohio",
-        email: "lebron@dev.com",
-        password: "1234",
-        age: "35"
-    },
-    {
-        id: 2,
-        firstname: "Carmelo",
-        lastname: "Anthony",
-        address: "New York",
-        email: "melo@dev.com",
-        password: "1234",
-        age: "35"
-    },
-    {
-        id: 3,
-        firstname: "Chris",
-        lastname: "Bosh",
-        address: "Texas",
-        email: "chrisbosh@dev.com",
-        password: "1234",
-        age: "35"
-    },
-    {
-        id: 4,
-        firstname: "Dwyane",
-        lastname: "Wade",
-        address: "Illinois",
-        email: "dwade@dev.com",
-        password: "1234",
-        age: "38"
-    }
-]
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-module.exports = users;
+const userSchema = new Schema({
+    userName: {
+        type: String,
+        required: true
+    },
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
+        type: String,
+        require: false
+    },
+    address: {
+        type: String,
+        require: false
+    },
+    email: {
+        type: String,
+        require: true
+    },
+    password: {
+        type: String,
+        require: true
+    },
+    age: {
+        type: String
+        // require: false
+    },
+    avatar: {
+        type: String
+    }
+});
+
+const Users = mongoose.model("users", userSchema);
+
+module.exports = Users;
