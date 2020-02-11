@@ -1,8 +1,8 @@
 # express-users
 
-## https://express-users-mashes.herokuapp.com/
+## https://express-mongodb-users.herokuapp.com
 
 
-# TEMPORARY DATABASE : https://express-users-mashes.herokuapp.com/users
+# TEMPORARY DATABASE : https://express-mongodb-users.herokuapp.com/users
 
 ## want to add your data ? just use this link
