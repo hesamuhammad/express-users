@@ -11,7 +11,7 @@ const mongoose = require("mongoose");
 const { PORT } = require("../config");
 
 mongoose
-    .connect("mongodb://localhost:27017/test", {
+    .connect("mongodb+srv://hesamuhammad:Hesa1234@cluster0-dlh6p.mongodb.net/test?retryWrites=true&w=majority", {
         useNewUrlParser: true,
         useUnifiedTopology: true
     })
