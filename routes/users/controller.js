@@ -3,6 +3,7 @@ const { hashPassword } = require("../../helpers");
 const { comparedPassword } = require("../../helpers");
 
 module.exports = {
+    
     getAll: async (req, res) => {
         try {
             const result = await Users.find({});
@@ -80,6 +81,7 @@ module.exports = {
     postData: async (req, res) => {
         try {
             const data = req.body;
+            console.log('masuk', req.body)
             const file = req.file;
             const hash = await hashPassword(req.body.password);
 
@@ -91,7 +93,7 @@ module.exports = {
                 avatar: file === undefined ? null : file.path,
                 password: hash
             });
-            // console.log(data);
+            console.log(result);
             // console.log(file);
 
             res.status(200).send({
