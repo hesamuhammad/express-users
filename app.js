@@ -25,7 +25,7 @@ app.use(
             { url: "/", methods: ["GET"] },
             { url: "/users/login", methods: ["POST"] },
             { url: "/nba", methods: ["GET"] },
-            { url: "/users", method : ["POST"]}
+            { url: "/users", method: ["POST"] }
         ]
     })
 );
