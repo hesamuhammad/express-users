@@ -114,7 +114,10 @@ module.exports = {
                 result.password
             );
             if (compared === true) {
-                const token = jwt.sign({ result }, "INISECRET");
+                const token = jwt.sign({ result }, "INISECRET", {
+                    expireIn: "30s"
+                });
+
                 res.status(200).send({
                     message: "You are successfully logged in",
                     data: token
