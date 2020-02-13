@@ -1,9 +1,9 @@
 const { Users } = require("../../models");
 const { hashPassword } = require("../../helpers");
 const { comparedPassword } = require("../../helpers");
+const jwt = require("jsonwebtoken");
 
 module.exports = {
-    
     getAll: async (req, res) => {
         try {
             const result = await Users.find({});
@@ -81,7 +81,7 @@ module.exports = {
     postData: async (req, res) => {
         try {
             const data = req.body;
-            console.log('masuk', req.body)
+            console.log("masuk", req.body);
             const file = req.file;
             const hash = await hashPassword(req.body.password);
 
