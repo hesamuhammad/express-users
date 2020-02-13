@@ -19,7 +19,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "assets")));
 
-app.use(expressJWT({ secret: "INISECRET" }));
+app.use(
+    expressJWT({ secret: "INISECRET" }).unless({
+        path: [
+            { url: "/", methods: ["GET"] },
+            { url: "/users/login", methods: ["POST"] },
+            { url: "/nba", methods: ["GET"] }
+        ]
+    })
+);
 
 app.use((err, req, res, next) => {
     if (err.name === "UnauthorizedError") {
