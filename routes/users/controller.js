@@ -114,9 +114,10 @@ module.exports = {
                 result.password
             );
             if (compared === true) {
+                const token = jwt.sign({ result }, "INI SECRET");
                 res.status(200).send({
                     message: "You are successfully logged in",
-                    data: result
+                    data: token
                 });
             } else {
                 res.status(400).send({
