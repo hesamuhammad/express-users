@@ -120,7 +120,7 @@ module.exports = {
 
                 res.status(200).send({
                     message: "You are successfully logged in",
-                    data: token
+                    token: token
                 });
             } else {
                 res.status(400).send({
